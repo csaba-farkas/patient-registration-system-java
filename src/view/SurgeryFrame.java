@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,16 +32,18 @@ public class SurgeryFrame extends JFrame implements GUIInterface {
     
     private static final String ADD_BUTTON_LABEL = "Add...";
     private static final String DELETE_BUTTON_LABEL = "Delete...";
+    private static final String SAVE_AND_EXIT_BUTTON_LABEL = "Save&Exit";
     private static final String EXIT_BUTTON_LABEL = "Exit";
     
     private JButton addButton;
     private JButton deleteButton;
+    private JButton saveAndCloseButton;
     private JButton closeButton;
     private JTable patientTable;
     private SurgeryTableModel surgeryTableModel;
     
     
-    public SurgeryFrame(String title) {
+    public SurgeryFrame(String title) throws IOException, FileNotFoundException, ClassNotFoundException {
         super(title);
         
         JPanel mainPanel = new JPanel(new BorderLayout());
@@ -86,7 +90,7 @@ public class SurgeryFrame extends JFrame implements GUIInterface {
         //Add button with actionListener that opens the 'Add new patient' dialog
         this.addButton = new JButton(SurgeryFrame.ADD_BUTTON_LABEL);
         this.addButton.addActionListener((ActionEvent e) -> {
-            new SurgeryDialog(SurgeryFrame.this, "Add new patient", SurgeryFrame.this.getSize().width, SurgeryFrame.this.getSize().height);
+            SurgeryDialog surgeryDialog = new SurgeryDialog(SurgeryFrame.this, "Add new patient", SurgeryFrame.this.getSize().width, SurgeryFrame.this.getSize().height);
         });
         
         //Delete button that opens a JOptionPane warning box
@@ -94,32 +98,48 @@ public class SurgeryFrame extends JFrame implements GUIInterface {
         this.deleteButton.setEnabled(false);
         this.deleteButton.addActionListener(new DeleteButtonActionListener());
         
-        //Cancel button that closes the frame
-        this.closeButton = new JButton(SurgeryFrame.EXIT_BUTTON_LABEL);
-        this.closeButton.addActionListener(new ActionListener() {
+        //Save&Close button that saves the progress and exits the program
+        this.saveAndCloseButton = new JButton(SurgeryFrame.SAVE_AND_EXIT_BUTTON_LABEL);
+        this.saveAndCloseButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 int answer = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to exit?");
+                if(answer != JOptionPane.NO_OPTION && answer != JOptionPane.CANCEL_OPTION) {
+                    SurgeryController.getInstance().save();
+                    dispose();
+                }
+            }
+        });
+        
+        //Close button that closes the program without saving
+        this.closeButton = new JButton(SurgeryFrame.EXIT_BUTTON_LABEL);
+        this.closeButton.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int answer = JOptionPane.showConfirmDialog(rootPane, "Are you sure you want to exit without saving?");
                 if(answer != JOptionPane.NO_OPTION && answer != JOptionPane.CANCEL_OPTION) {
                     dispose();
                 }
             }
         });
         
+        
         //Add buttons to panel and return panel
         southPanel.add(this.addButton);
         southPanel.add(this.deleteButton);
+        southPanel.add(this.saveAndCloseButton);
         southPanel.add(this.closeButton);
         
         return southPanel;
     }
 
     //Create the JScrollPane that holds the table
-    private JScrollPane createTableScrollPane() {
+    private JScrollPane createTableScrollPane() throws IOException, FileNotFoundException, ClassNotFoundException {
         
-        
-        this.surgeryTableModel = new SurgeryTableModel(SurgeryController.getInstance().getDataModel().getPatients());
+        SurgeryController.getInstance().open();
+        this.surgeryTableModel = new SurgeryTableModel(SurgeryController.getInstance().getSurgeryModel().getPatients());
         
         this.patientTable = new JTable();
         
@@ -193,8 +213,7 @@ public class SurgeryFrame extends JFrame implements GUIInterface {
             if(answer == JOptionPane.YES_OPTION) {
                 System.out.println("Patient deletion confirmed!");
                 //Call the controller, to remove patient that was selected
-                SurgeryController.getInstance().removeAdultPatient(SurgeryController.getInstance().getDataModel().getPatientAtRowNumber(rowSelected));
-               // getSurgeryTableModel().setPatients(SurgeryController.getInstance().getDataModel().getPatients());
+                SurgeryController.getInstance().removeAdultPatient(SurgeryController.getInstance().getSurgeryModel().getPatientAtRowNumber(rowSelected));
                 
                 SurgeryController.getInstance().getGUIReference().refresh();
             }

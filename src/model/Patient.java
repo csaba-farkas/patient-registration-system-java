@@ -1,11 +1,13 @@
 
 package model;
 
+import java.io.Serializable;
+
 /*
  * @author Csaba
  * Date: 19-Feb-2015
  */
-public abstract class Patient {
+public abstract class Patient implements Serializable {
 
     private String name;
     private String address;

@@ -1,11 +1,13 @@
 
 package model;
 
+import java.io.Serializable;
+
 /*
  * @author Csaba
  * Date: 19-Feb-2015
  */
-public class AdultPatient extends Patient {
+public class AdultPatient extends Patient implements Serializable {
 
     private String occupation;
 

@@ -1,5 +1,7 @@
 
 import controller.SurgeryController;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import model.Surgery;
 import view.SurgeryFrame;
 
@@ -10,7 +12,7 @@ import view.SurgeryFrame;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, FileNotFoundException, ClassNotFoundException {
         
         Surgery dataModel = new Surgery();
         

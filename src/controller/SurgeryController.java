@@ -1,6 +1,11 @@
 
 package controller;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import model.AdultPatient;
 import model.ChildPatient;
 import model.Patient;
@@ -33,9 +38,10 @@ public class SurgeryController {
         this.surgeryModel = surgery;
     }
     
-    public Surgery getDataModel() {
+    public Surgery getSurgeryModel() {
         return this.surgeryModel;
     } 
+    
     
     //Add adult patient
     public void createAdultPatient(String name, String address, String gender, String occupation) {
@@ -63,6 +69,37 @@ public class SurgeryController {
         this.gui.refresh();
     }
 
+    //Save file
+    public void save() {
+        SurgerySerializer surgerySerializer = new SurgerySerializer(this.surgeryModel);
+        try {
+            surgerySerializer.writeToFile();
+        } catch (IOException ex) {
+            System.out.println("'dat' file was not found");
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    //Open file
+    public void open() throws FileNotFoundException, IOException, ClassNotFoundException {
+        
+        FileInputStream fileInputStream = new FileInputStream("c:\\Users\\Csaba\\Documents\\NetBeansProjects\\OOP2 - Assignment 1\\src\\data\\surgery.dat");
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+        
+        Surgery patients = (Surgery) objectInputStream.readObject();
+        
+        
+        objectInputStream.close();
+        fileInputStream.close();
+        
+        if(patients != null) {
+           this.surgeryModel = patients;
+        }
+            
+        }
+        
+        
+    }
     
     
-}
+

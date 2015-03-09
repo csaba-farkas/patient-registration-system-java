@@ -1,6 +1,7 @@
 
 package controller;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,13 +27,15 @@ public class SurgerySerializer {
     public void writeToFile() throws IOException {
         try {
             
-            FileOutputStream fileOutputStream = new FileOutputStream("surgery.dat");
+            FileOutputStream fileOutputStream = new FileOutputStream("c:\\Users\\Csaba\\Documents\\NetBeansProjects\\OOP2 - Assignment 1\\src\\data\\surgery.dat");
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
             objectOutputStream.writeObject(this.surgery);
             objectOutputStream.close();
+            fileOutputStream.close();
             
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(SurgerySerializer.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("File not found");
+            ex.printStackTrace();
         }
     }
 
