@@ -190,9 +190,7 @@ public class SurgeryDialog extends JDialog {
             String address = addressField.getText();
             String gender = genderField.getText();
             
-            SurgeryController.getInstance().createAdultPatient(name, address, gender, "");
-            parent.getSurgeryTableModel().setPatients(SurgeryController.getInstance().getDataModel().getPatients());
-            
+            SurgeryController.getInstance().createAdultPatient(name, address, gender, "");            
             SurgeryController.getInstance().getGUIReference().refresh();
             
             dispose();

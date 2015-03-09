@@ -1,5 +1,4 @@
 
-import controller.GUIInterface;
 import controller.SurgeryController;
 import model.Surgery;
 import view.SurgeryFrame;
@@ -14,7 +13,13 @@ public class Main {
     public static void main(String[] args) {
         
         Surgery dataModel = new Surgery();
-        GUIInterface gui = new SurgeryFrame("Patient Database");
-        SurgeryController.getInstance().setSurgeryModel(dataModel, gui);
+        
+        SurgeryController.getInstance().setSurgeryModel(dataModel);
+        
+        SurgeryFrame gui = new SurgeryFrame("Patient Database");
+        
+        SurgeryController.getInstance().setGUIReference(gui);
+        
+        
     }
 }

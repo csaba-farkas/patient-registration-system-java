@@ -29,9 +29,8 @@ public class SurgeryController {
         
     }
     
-    public void setSurgeryModel(Surgery surgery, GUIInterface gui) {
+    public void setSurgeryModel(Surgery surgery) {
         this.surgeryModel = surgery;
-        this.gui = gui;
     }
     
     public Surgery getDataModel() {
@@ -41,7 +40,8 @@ public class SurgeryController {
     //Add adult patient
     public void createAdultPatient(String name, String address, String gender, String occupation) {
         AdultPatient adultPatient = new AdultPatient(name, address, gender, occupation);
-        this.surgeryModel.addPatient(adultPatient);       
+        this.surgeryModel.addPatient(adultPatient); 
+        this.gui.refresh();
     }
     
     public void setGUIReference(GUIInterface gui) {
@@ -60,6 +60,7 @@ public class SurgeryController {
     public void createChildPatient(String name, String address, String gender, String nameOfSchool) {
         ChildPatient childPatient = new ChildPatient(name, address, gender, nameOfSchool);
         this.surgeryModel.addPatient(childPatient);
+        this.gui.refresh();
     }
 
     

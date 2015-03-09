@@ -45,7 +45,7 @@ public class SurgeryFrame extends JFrame implements GUIInterface {
         JPanel mainPanel = new JPanel(new BorderLayout());
         
         
-        ////////// Add panel with butons //////////////////////
+        ////////// Add panel with buttons //////////////////////
         mainPanel.add(createSouthPanel(), BorderLayout.SOUTH);
         this.getContentPane().add(mainPanel);
         ///////////////////////////////////////////////////////
@@ -77,10 +77,7 @@ public class SurgeryFrame extends JFrame implements GUIInterface {
         return this.patientTable;
     }
 
-    public SurgeryTableModel getSurgeryTableModel() {
-        return surgeryTableModel;
-    }
-    
+      
     //This is the panel in the bottom with the three buttons
     private Component createSouthPanel() {
         
@@ -88,7 +85,9 @@ public class SurgeryFrame extends JFrame implements GUIInterface {
         
         //Add button with actionListener that opens the 'Add new patient' dialog
         this.addButton = new JButton(SurgeryFrame.ADD_BUTTON_LABEL);
-        this.addButton.addActionListener(new AddButtonActionListener());
+        this.addButton.addActionListener((ActionEvent e) -> {
+            new SurgeryDialog(SurgeryFrame.this, "Add new patient", SurgeryFrame.this.getSize().width, SurgeryFrame.this.getSize().height);
+        });
         
         //Delete button that opens a JOptionPane warning box
         this.deleteButton = new JButton(SurgeryFrame.DELETE_BUTTON_LABEL);
@@ -119,7 +118,9 @@ public class SurgeryFrame extends JFrame implements GUIInterface {
     //Create the JScrollPane that holds the table
     private JScrollPane createTableScrollPane() {
         
-        this.surgeryTableModel = new SurgeryTableModel();
+        
+        this.surgeryTableModel = new SurgeryTableModel(SurgeryController.getInstance().getDataModel().getPatients());
+        
         this.patientTable = new JTable();
         
         this.patientTable.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
@@ -171,7 +172,6 @@ public class SurgeryFrame extends JFrame implements GUIInterface {
         
         return tableScrollPane;
     }
-
     
     @Override
     public void refresh() {
@@ -194,7 +194,7 @@ public class SurgeryFrame extends JFrame implements GUIInterface {
                 System.out.println("Patient deletion confirmed!");
                 //Call the controller, to remove patient that was selected
                 SurgeryController.getInstance().removeAdultPatient(SurgeryController.getInstance().getDataModel().getPatientAtRowNumber(rowSelected));
-                getSurgeryTableModel().setPatients(SurgeryController.getInstance().getDataModel().getPatients());
+               // getSurgeryTableModel().setPatients(SurgeryController.getInstance().getDataModel().getPatients());
                 
                 SurgeryController.getInstance().getGUIReference().refresh();
             }
@@ -204,17 +204,5 @@ public class SurgeryFrame extends JFrame implements GUIInterface {
             
         }
     }
-
-    private class AddButtonActionListener implements ActionListener {
-
-        public AddButtonActionListener() {
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            SurgeryDialog surgeryDialog = new SurgeryDialog(SurgeryFrame.this, "Add new patient", SurgeryFrame.this.getSize().width, SurgeryFrame.this.getSize().height);
-        }
-    }
-
    
 }

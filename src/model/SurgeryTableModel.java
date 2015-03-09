@@ -20,14 +20,11 @@ public class SurgeryTableModel extends DefaultTableModel {
         
     ArrayList<Patient> patients;
     
-    public SurgeryTableModel() {
+    public SurgeryTableModel(ArrayList<Patient> patients) {
         super();
+        this.patients = patients;
     }
-    
-    public void createSurgeryTableModel() {
-        this.patients = new ArrayList<Patient>();
-    }
-    
+           
     public void setPatients(ArrayList<Patient> patients) {
         this.patients = patients;
     }
