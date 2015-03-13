@@ -1,11 +1,6 @@
 
 package controller;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.ArrayList;
+import java.util.Collections;
 import model.AdultPatient;
 import model.ChildPatient;
 import model.Patient;
@@ -47,20 +42,11 @@ public class SurgeryController {
     public void createAdultPatient(String name, String address, String gender, String occupation) {
         AdultPatient adultPatient = new AdultPatient(name, address, gender, occupation);
         this.surgeryModel.addPatient(adultPatient); 
+        Collections.sort(this.surgeryModel.getPatients());
         this.gui.refresh();
     }
     
-    public void setGUIReference(GUIInterface gui) {
-        this.gui = gui;
-    }
     
-    public GUIInterface getGUIReference() {
-        return this.gui;
-    }
-    public void removeAdultPatient(Patient patient) {
-        this.surgeryModel.removePatient(patient);
-        
-    }
     
     //Add child patient
     public void createChildPatient(String name, String address, String gender, String nameOfSchool) {
@@ -68,38 +54,22 @@ public class SurgeryController {
         this.surgeryModel.addPatient(childPatient);
         this.gui.refresh();
     }
-
-    //Save file
-    public void save() {
-        SurgerySerializer surgerySerializer = new SurgerySerializer(this.surgeryModel);
-        try {
-            surgerySerializer.writeToFile();
-        } catch (IOException ex) {
-            System.out.println("'dat' file was not found");
-            System.out.println(ex.getMessage());
-        }
+    
+    //Getter and setter methods for GUIInterface
+    public void setGUIReference(GUIInterface gui) {
+        this.gui = gui;
     }
     
-    //Open file
-    public void open() throws FileNotFoundException, IOException, ClassNotFoundException {
-        
-        FileInputStream fileInputStream = new FileInputStream("c:\\Users\\Csaba\\Documents\\NetBeansProjects\\OOP2 - Assignment 1\\src\\data\\surgery.dat");
-        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-        
-        Surgery patients = (Surgery) objectInputStream.readObject();
-        
-        
-        objectInputStream.close();
-        fileInputStream.close();
-        
-        if(patients != null) {
-           this.surgeryModel = patients;
-        }
-            
-        }
-        
+    public GUIInterface getGUIReference() {
+        return this.gui;
+    }
+    
+    //Remove a patient from the data model
+    public void removePatient(Patient patient) {
+        this.surgeryModel.removePatient(patient);
         
     }
+}
     
     
 

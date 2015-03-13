@@ -29,6 +29,7 @@ public class SurgeryTableModel extends DefaultTableModel {
         this.patients = patients;
     }
     
+    //This class overrides 4 methods of its parent's 
     @Override
     public int getColumnCount() {
         return NUMBER_OF_COLUMNS;

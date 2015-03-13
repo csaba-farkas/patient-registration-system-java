@@ -1,13 +1,13 @@
 
 package model;
 
-import java.io.Serializable;
-
 /*
  * @author Csaba
  * Date: 19-Feb-2015
  */
-public abstract class Patient implements Serializable {
+
+//Patient class implements Comparable interface. Patients are sorted alphabetically by their name
+public abstract class Patient implements Comparable<Patient> {
 
     private String name;
     private String address;
@@ -41,6 +41,11 @@ public abstract class Patient implements Serializable {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    @Override
+    public int compareTo(Patient patient) {
+        return this.getName().compareTo(patient.getName());
     }
     
     

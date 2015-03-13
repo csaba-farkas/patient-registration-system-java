@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author Csaba
  * Date: 19-Feb-2015
  */
-public class ChildPatient extends Patient implements Serializable {
+public class ChildPatient extends Patient {
     
     String nameOfSchool;
     
@@ -16,4 +16,13 @@ public class ChildPatient extends Patient implements Serializable {
         this.nameOfSchool = nameOfSchool;
     }
 
+    public String getNameOfSchool() {
+        return this.nameOfSchool;
+    }
+
+    public void setNameOfSchool(String nameOfSchool) {
+        this.nameOfSchool = nameOfSchool;
+    }
+
+    
 }

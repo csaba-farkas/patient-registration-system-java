@@ -1,14 +1,13 @@
 
 package model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /*
  * @author Csaba
  * Date: 05-Mar-2015
  */
-public class Surgery implements Serializable {
+public class Surgery {
       
     private ArrayList<Patient> patients;
     
